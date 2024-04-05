@@ -1,0 +1,29 @@
+[supervisord]
+logfile={{ plone_install_dir }}/var/log/supervisord.log
+pidfile={{ plone_install_dir }}/var/supervisor/supervisord.pid
+logfile_maxbytes=50MB
+logfile_backups=10
+loglevel=info
+childlogdir={{ plone_install_dir }}/var/log
+directory={{ plone_install_dir }}
+
+[unix_http_server]
+file = {{ plone_install_dir }}/var/supervisord.sock
+username =
+password =
+chmod = 0700
+
+[supervisorctl]
+serverurl = unix://{{ plone_install_dir }}/var/supervisord.sock
+username =
+password =
+
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory=supervisor.rpcinterface:make_main_rpcinterface
+
+[program:zeo]
+command = {{ plone_install_dir }}/parts/zeo/bin/runzeo
+process_name = zeo
+directory = {{ plone_install_dir }}/parts/zeo/
+priority = 10
+redirect_stderr = false

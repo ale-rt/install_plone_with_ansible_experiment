@@ -1,0 +1,58 @@
+---
+- name: "Install Plone with pip"
+  hosts:
+    - localhost
+  vars:
+    plone_install_dir: "{{ ansible_facts.env.PWD }}"
+    plone_version: 6.0.10.1
+    plone_python: python3.11
+    plone_base_port: 8080
+    plone_workers: 2
+    zeo_address: "{{ plone_install_dir }}/var/zeo/zeo.sock"
+  tasks:
+    - name: "Plone with pip"
+      ansible.builtin.pip:
+        state: present
+        name:
+          - "Plone"
+          - "collective.pdbpp"
+          - "collective.icecream"
+          - "ZEO"
+          - "supervisor"
+        virtualenv: "{{ ansible_facts.env.PWD }}/.venv"
+        virtualenv_python: "{{ plone_python }}"
+        extra_args: "-c https://dist.plone.org/release/{{ plone_version }}/constraints.txt"
+
+    - name: "Create the zeo directory structure"
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0700"
+      loop:
+        - "{{ plone_install_dir }}/etc"
+        - "{{ plone_install_dir }}/var/supervisor"
+        - "{{ plone_install_dir }}/var/zeo"
+        - "{{ plone_install_dir }}/var/filestorage"
+        - "{{ plone_install_dir }}/var/blobstorage"
+        - "{{ plone_install_dir }}/var/log"
+        - "{{ plone_install_dir }}/parts/zeo"
+        - "{{ plone_install_dir }}/parts/zeo/bin"
+        - "{{ plone_install_dir }}/parts/zeo/etc"
+
+    - name: "Create the zeo configuration file"
+      ansible.builtin.template:
+        src: "parts/zeo/etc/zeo.conf.j2"
+        dest: "{{ plone_install_dir }}/parts/zeo/etc/zeo.conf"
+        mode: "0600"
+
+    - name: "Create the runzeo file"
+      ansible.builtin.template:
+        src: "parts/zeo/bin/runzeo.j2"
+        dest: "{{ plone_install_dir }}/parts/zeo/bin/runzeo"
+        mode: "0700"
+
+    - name: "Create the supervisor configuration file"
+      ansible.builtin.template:
+        src: "etc/supervisord.conf.j2"
+        dest: "{{ plone_install_dir }}/etc/supervisord.conf"
+        mode: "0600"
