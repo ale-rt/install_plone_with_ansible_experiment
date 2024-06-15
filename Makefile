@@ -20,3 +20,7 @@ var/plone-installed: .venv/bin/uv requirements.txt constraints.txt
 .PHONY: start
 start:
 	.venv/bin/supervisord -c etc/supervisord.conf
+
+.PHONY: stop
+stop:
+	.venv/bin/supervisorctl -c etc/supervisord.conf shutdown

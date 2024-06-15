@@ -1,5 +1,5 @@
 ---
-- name: 'Install Plone with pip'
+- name: 'Install Plone with ansible'
   hosts:
     - localhost
   vars:
