@@ -5,14 +5,17 @@ all: install
 install: .venv/bin/ansible-playbook
 	.venv/bin/ansible-playbook playbook.yml
 
-.venv/bin/supervisord: install
+var/plone-installed: .venv/bin/uv requirements.txt constraints.txt
+	.venv/bin/uv pip install -r requirements.txt -c constraints.txt
+	mkdir -p var/
+	touch var/plone-installed
 
-.venv/bin/pip:
+.venv/bin/uv:
 	python3 -m venv .venv
-	.venv/bin/pip install --upgrade pip
+	.venv/bin/pip install uv
 
-.venv/bin/ansible-playbook: .venv/bin/pip
-	.venv/bin/pip install ansible
+.venv/bin/ansible-playbook: .venv/bin/uv
+	.venv/bin/uv pip install ansible
 
 .PHONY: start
 start:
