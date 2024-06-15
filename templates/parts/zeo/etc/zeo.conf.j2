@@ -1,0 +1,36 @@
+%define INSTANCE {{ plone_install_dir }}/parts/zeo
+
+<zeo>
+  address {{ plone_install_dir }}/var/zeo.socket
+  read-only false
+  invalidation-queue-size 100
+  pid-filename {{ plone_install_dir }}/var/zeo.pid
+</zeo>
+
+<filestorage 1>
+  path {{ plone_install_dir }}/var/filestorage/Data.fs
+  blob-dir {{ plone_install_dir }}/var/blobstorage
+</filestorage>
+
+<eventlog>
+  level info
+  <logfile>
+    path {{ plone_install_dir }}/var/log/zeo.log
+    format %(asctime)s %(message)s
+  </logfile>
+</eventlog>
+
+<runner>
+  program $INSTANCE/bin/runzeo
+  socket-name {{ plone_install_dir }}/var/zeo.zdsock
+  daemon true
+  forever false
+  backoff-limit 10
+  exit-codes 0, 2
+  directory $INSTANCE
+  default-to-interactive true
+
+  # This logfile should match the one in the zeo.conf file.
+  # It is used by zdctl's logtail command, zdrun/zdctl doesn't write it.
+  logfile {{ plone_install_dir }}/var/log/zeo.log
+</runner>

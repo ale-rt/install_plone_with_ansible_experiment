@@ -1,0 +1,29 @@
+%define INSTANCEHOME {{ plone_install_dir }}/parts/instance
+instancehome $INSTANCEHOME
+%define CLIENTHOME {{ plone_install_dir }}/var/instance
+clienthome $CLIENTHOME
+debug-mode off
+security-policy-implementation C
+verbose-security off
+default-zpublisher-encoding utf-8
+<environment>
+    zope_i18n_compile_mo_files true
+    CHAMELEON_CACHE {{ plone_install_dir }}/var/cache
+</environment>
+<zodb_db main>
+    # Main database
+    cache-size 100000
+# Blob-enabled ZEOStorage database
+    <zeoclient>
+      read-only false
+      read-only-fallback false
+      blob-dir {{ plone_install_dir }}/var/blobstorage
+      shared-blob-dir on
+      server {{ plone_install_dir }}/var/zeo.socket
+      storage 1
+      name zeostorage
+      cache-size 128MB
+    </zeoclient>
+    mount-point /
+</zodb_db>
+python-check-interval 10000
