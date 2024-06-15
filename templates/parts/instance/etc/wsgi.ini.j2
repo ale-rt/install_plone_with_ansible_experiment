@@ -1,7 +1,7 @@
 [server:main]
 paste.server_factory = plone.recipe.zope2instance:main
 use = egg:plone.recipe.zope2instance#main
-fast-listen = 0.0.0.0:8080
+fast-listen = 0.0.0.0:{{ plone_base_port }}
 threads = 4
 
 [app:zope]

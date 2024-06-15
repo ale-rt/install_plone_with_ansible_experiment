@@ -11,6 +11,10 @@
     zeo_address: '{{ plone_install_dir }}/var/zeo/zeo.sock'
   tasks:
 
+    - name: 'Check if we have custom defined variables'
+      ansible.builtin.include_vars:
+        dir: etc/ansible
+
     - name: 'Write a requirements.txt file'
       ansible.builtin.lineinfile:
         dest: 'requirements.txt'
