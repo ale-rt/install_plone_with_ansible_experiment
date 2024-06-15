@@ -3,8 +3,8 @@ all: install
 
 .PHONY: install
 install: .venv/bin/ansible-playbook
-	.venv/bin/ansible-playbook playbook.yml
 	mkdir -p etc/ansible
+	.venv/bin/ansible-playbook playbook.yml
 
 var/plone-installed: .venv/bin/uv requirements.txt constraints.txt
 	.venv/bin/uv pip install -r requirements.txt -c constraints.txt
