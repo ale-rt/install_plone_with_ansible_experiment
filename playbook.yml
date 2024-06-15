@@ -10,7 +10,6 @@
     plone_workers: 2
     zeo_address: '{{ plone_install_dir }}/var/zeo/zeo.sock'
   tasks:
-
     - name: 'Check if we have custom defined variables'
       ansible.builtin.include_vars:
         dir: etc/ansible
@@ -23,13 +22,30 @@
         mode: '0600'
       loop:
         - 'Plone'
-        - 'collective.pdbpp'
-        - 'collective.icecream'
         - 'ZEO'
         - 'supervisor'
         - 'plone.recipe.zope2instance'
 
-    - name: "Write a constraints.txt file"
+    - name: 'Add extra packages'
+      ansible.builtin.lineinfile:
+        dest: 'requirements.txt'
+        line: '{{ item }}'
+      loop: '{{ plone_extra_packages | default([]) }}'
+
+    - name: 'Checkout packages for local development'
+      ansible.builtin.git:
+        repo: '{{ item.repo }}'
+        dest: 'src/{{ item.name }}'
+        version: '{{ item.version }}'
+      loop: '{{ plone_source_checkouts | default([]) }}'
+
+    - name: 'Add source checkouts'
+      ansible.builtin.lineinfile:
+        dest: 'requirements.txt'
+        line: '-e src/{{ item.name }}'
+      loop: '{{ plone_source_checkouts | default([]) }}'
+
+    - name: 'Write a constraints.txt file'
       ansible.builtin.lineinfile:
         dest: 'constraints.txt'
         line: '{{ item }}'
@@ -90,6 +106,15 @@
         - '{{ plone_install_dir }}/parts/instance/etc'
         - '{{ plone_install_dir }}/parts/instance/etc/package-includes'
         - '{{ plone_install_dir }}/parts/instance/var'
+
+    - name: 'Load files through zcml'
+      ansible.builtin.template:
+        src: 'parts/instance/etc/package-includes/instance.zcml.j2'
+        dest: "{{ plone_install_dir }}/parts/instance/etc/package-includes/{{ '1{:02}'.format(ansible_loop.index) }}-{{ item }}.zcml"
+        mode: '0600'
+      loop: '{{ plone_zcml | default([]) }}'
+      loop_control:
+        extended: true
 
     - name: 'Create the instance bin/interpreter file'
       ansible.builtin.template:
