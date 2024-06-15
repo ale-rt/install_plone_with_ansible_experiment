@@ -27,3 +27,10 @@ process_name = zeo
 directory = {{ plone_install_dir }}/parts/zeo/
 priority = 10
 redirect_stderr = false
+
+[program:instance]
+command = {{ plone_install_dir }}/bin/instance console
+process_name = instance
+directory = {{ plone_install_dir }}
+priority = 20
+redirect_stderr = false

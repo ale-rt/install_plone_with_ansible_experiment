@@ -1,0 +1,19 @@
+#!{{ plone_install_dir }}/.venv/bin/python
+
+import plone.recipe.zope2instance.ctl
+import sys
+
+if __name__ == "__main__":
+    sys.exit(
+        plone.recipe.zope2instance.ctl.main(
+            [
+                "-C",
+                "{{ plone_install_dir }}/parts/instance/etc/zope.conf",
+                "-p",
+                "{{ plone_install_dir }}/parts/instance/bin/interpreter",
+                "-w",
+                "{{ plone_install_dir }}/parts/instance/etc/wsgi.ini",
+            ]
+            + sys.argv[1:]
+        )
+    )
