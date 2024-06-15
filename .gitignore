@@ -2,6 +2,7 @@
 /.venv/
 /etc/
 /parts
+/src
 /constraints.txt
 /requirements.txt
 /var
