@@ -22,3 +22,21 @@ cd plone
 make
 make start
 ```
+
+### Customizations
+
+Variables for this playbook can be customizaed by placing a YaML file inn the `etc/ansible` folder.
+
+E.g.:
+```yaml
+plone_base_port: 9000
+plone_extra_packages:
+  - 'collective.pdbpp'
+  - 'collective.icecream'
+plone_source_checkouts:
+  - name: 'plone.app.debugtoolbar'
+    repo: 'https://github.com/plone/plone.app.debugtoolbar'
+    version: 'master'
+plone_zcml:
+  - 'plone.app.debugtoolbar'
+```

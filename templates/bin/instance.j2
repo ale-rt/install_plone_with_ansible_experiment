@@ -8,11 +8,11 @@ if __name__ == "__main__":
         plone.recipe.zope2instance.ctl.main(
             [
                 "-C",
-                "{{ plone_install_dir }}/parts/instance/etc/zope.conf",
+                "{{ plone_install_dir }}/parts/{{ plone_instance_name }}/etc/zope.conf",
                 "-p",
-                "{{ plone_install_dir }}/parts/instance/bin/interpreter",
+                "{{ plone_install_dir }}/parts/{{ plone_instance_name }}/bin/interpreter",
                 "-w",
-                "{{ plone_install_dir }}/parts/instance/etc/wsgi.ini",
+                "{{ plone_install_dir }}/parts/{{ plone_instance_name }}/etc/wsgi.ini",
             ]
             + sys.argv[1:]
         )

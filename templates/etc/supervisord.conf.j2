@@ -28,9 +28,18 @@ directory = {{ plone_install_dir }}/parts/zeo/
 priority = 10
 redirect_stderr = false
 
-[program:instance]
-command = {{ plone_install_dir }}/bin/instance console
-process_name = instance
+{% for idx in range(1, plone_workers + 1) %}
+[program:instance{{ idx }}]
+command = {{ plone_install_dir }}/bin/instance{{ idx }} console
+process_name = instance{{ idx }}
 directory = {{ plone_install_dir }}
 priority = 20
+redirect_stderr = false
+{% endfor %}
+
+[program:worker]
+command = {{ plone_install_dir }}/bin/worker console
+process_name = worker
+directory = {{ plone_install_dir }}
+priority = 30
 redirect_stderr = false
