@@ -13,6 +13,8 @@
     - name: 'Check if we have custom defined variables'
       ansible.builtin.include_vars:
         dir: etc/ansible
+      tags:
+        - always
 
     - name: 'Write a requirements.txt file'
       ansible.builtin.lineinfile:
@@ -45,14 +47,24 @@
         line: '-e src/{{ item.name }}'
       loop: '{{ plone_source_checkouts | default([]) }}'
 
-    - name: 'Write a constraints.txt file'
-      ansible.builtin.lineinfile:
-        dest: 'constraints.txt'
-        line: '{{ item }}'
-        create: true
+    - name: 'Check if we have a constraints.txt file'
+      ansible.builtin.stat:
+        path: '{{ plone_install_dir }}/constraints.txt'
+      register: constraints_file
+
+    - name: 'Fetch the constraints.txt file'
+      ansible.builtin.get_url:
+        url: 'https://dist.plone.org/release/{{ plone_version }}/constraints.txt'
+        dest: '{{ plone_install_dir }}/constraints.txt'
         mode: '0600'
-      loop:
-        - '-c https://dist.plone.org/release/{{ plone_version }}/constraints.txt'
+      when: not constraints_file.stat.exists
+
+    - name: 'Be sure we do not have checked out packages in the constraints.txt file'
+      ansible.builtin.lineinfile:
+        dest: '{{ plone_install_dir }}/constraints.txt'
+        regexp: '^{{ item.name }}=='
+        state: absent
+      loop: '{{ plone_source_checkouts | default([]) }}'
 
     - name: 'Install Plone'
       community.general.make:
