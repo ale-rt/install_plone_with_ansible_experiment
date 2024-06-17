@@ -2,3 +2,6 @@
 plone_install_dir: '{{ ansible_facts.env.PWD }}'  # noqa: var-naming[no-role-prefix]
 plone_instance_name: 'instance'  # noqa: var-naming[no-role-prefix]
 plone_instance_port: '{{ plone_base_port }}'  # noqa: var-naming[no-role-prefix]
+plone_additional_zcml:  # noqa: var-naming[no-role-prefix]
+plone_instance_threads: 4  # noqa: var-naming[no-role-prefix]
+plone_fast_listen: true  # noqa: var-naming[no-role-prefix]

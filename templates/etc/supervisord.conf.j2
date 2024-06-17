@@ -37,9 +37,11 @@ priority = 20
 redirect_stderr = false
 {% endfor %}
 
+{% if plone_worker_instance %}
 [program:worker]
 command = {{ plone_install_dir }}/bin/worker console
 process_name = worker
 directory = {{ plone_install_dir }}
 priority = 30
 redirect_stderr = false
+{% endif %}

@@ -20,6 +20,12 @@
   loop_control:
     extended: true
 
+- name: 'Store the content of the plone_additional_zcml variable in a 999 file'
+  ansible.builtin.template:
+    src: 'parts/instance/etc/package-includes/999-additional-overrides.zcml.j2'
+    dest: "{{ plone_install_dir }}/parts/{{ plone_instance_name }}/etc/package-includes/999-{{ plone_instance_name }}.zcml"
+    mode: '0600'
+
 - name: 'Create the instance bin/interpreter file'
   ansible.builtin.template:
     src: 'parts/instance/bin/interpreter.j2'
