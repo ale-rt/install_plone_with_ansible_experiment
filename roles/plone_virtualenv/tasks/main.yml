@@ -58,7 +58,6 @@
 - name: 'Install a virtualenv with uv'
   ansible.builtin.pip:
     name: 'uv'
-    state: '0.2.11'
     virtualenv: '{{ plone_install_dir }}/.venv'
     virtualenv_python: '{{ plone_python }}'
 
