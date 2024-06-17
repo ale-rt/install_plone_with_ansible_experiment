@@ -60,10 +60,10 @@
     state: directory
     mode: '0700'
 
-- name: 'Create the bin/plone_interpreter file'
-  ansible.builtin.template:
-    src: 'bin/plone_interpreter.j2'
-    dest: '{{ plone_install_dir }}/bin/plone_interpreter'
+- name: 'Create the supervisord folder'
+  ansible.builtin.file:
+    path: '{{ plone_install_dir }}/etc/supervisord.d'
+    state: directory
     mode: '0700'
 
 - name: 'Symlink supervisorctl and supervisord in the bin file'
@@ -74,3 +74,9 @@
   loop:
     - 'supervisorctl'
     - 'supervisord'
+
+- name: 'Create the supervisor configuration file'
+  ansible.builtin.template:
+    src: 'etc/supervisord.conf.j2'
+    dest: '{{ plone_install_dir }}/etc/supervisord.conf'
+    mode: '0600'

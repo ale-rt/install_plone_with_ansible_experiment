@@ -37,4 +37,4 @@ restart:
 
 .PHONY: clean
 clean:
-	rm -rf .venv bin parts requirements.txt constraints.txt var/plone-installed
+	rm -rf .venv bin parts requirements.txt constraints.txt var/plone-installed etc/supervisord.d/*

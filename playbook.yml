@@ -31,6 +31,8 @@
     - name: 'Run the tasks from the role plone_instance'
       ansible.builtin.include_role:
         name: plone_instance
+      vars:
+        plone_instance_skip_supervisor: true
 
     - name: 'Create the instance workers'
       ansible.builtin.include_role:
@@ -51,9 +53,3 @@
         plone_instance_name: 'worker'
         plone_instance_port: '{{ plone_base_port | int + 9 }}'
       when: plone_worker_instance
-
-    - name: 'Create the supervisor configuration file'
-      ansible.builtin.template:
-        src: 'etc/supervisord.conf.j2'
-        dest: '{{ plone_install_dir }}/etc/supervisord.conf'
-        mode: '0600'

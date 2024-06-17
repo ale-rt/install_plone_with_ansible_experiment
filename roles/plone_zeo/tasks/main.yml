@@ -28,3 +28,9 @@
     src: 'parts/zeo/bin/runzeo.j2'
     dest: '{{ plone_install_dir }}/parts/zeo/bin/runzeo'
     mode: '0700'
+
+- name: 'Create the zeo supervisor configuration file'
+  ansible.builtin.template:
+    src: 'etc/supervisord.d/zeo.conf.j2'
+    dest: '{{ plone_install_dir }}/etc/supervisord.d/zeo.conf'
+    mode: '0600'

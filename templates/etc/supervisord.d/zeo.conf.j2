@@ -1,0 +1,6 @@
+[program:zeo]
+command = {{ plone_install_dir }}/parts/zeo/bin/runzeo
+process_name = zeo
+directory = {{ plone_install_dir }}/parts/zeo/
+priority = 10
+redirect_stderr = false
