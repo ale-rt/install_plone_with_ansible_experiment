@@ -57,7 +57,7 @@
 
 - name: 'Install uv'
   ansible.builtin.command:
-    cmd: 'pip install uv'
+    cmd: '{{ plone_install_dir }}/.venv/bin/pip install uv'
     creates: '{{ plone_install_dir }}/.venv/bin/uv'
   changed_when: false
 
