@@ -20,20 +20,23 @@ var/plone-installed: .venv/bin/uv requirements.txt constraints.txt
 
 .PHONY: start
 start:
-	@.venv/bin/supervisord -c etc/supervisord.conf
+	@.venv/bin/supervisord
 
 .PHONY: status
 status:
-	@.venv/bin/supervisorctl -c etc/supervisord.conf
+	@.venv/bin/supervisorctl
 
 .PHONY: stop
 stop:
-	@.venv/bin/supervisorctl -c etc/supervisord.conf shutdown
+	@.venv/bin/supervisorctl shutdown
 
 .PHONY: restart
 restart:
-	@.venv/bin/supervisorctl -c etc/supervisord.conf reload > /dev/null || make start
+	@.venv/bin/supervisorctl reload > /dev/null || make start
 
+.PHONY: test
+test: .venv/bin/ansible-playbook
+	.venv/bin/ansible-playbook test.yml
 
 .PHONY: clean
 clean:

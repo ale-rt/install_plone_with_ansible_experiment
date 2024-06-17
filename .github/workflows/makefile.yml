@@ -35,3 +35,9 @@ jobs:
 
       - name: Install dependencies
         run: make
+
+      - name: Start the instance
+        run: make start
+
+      - name: Test the instances
+        run: make test
