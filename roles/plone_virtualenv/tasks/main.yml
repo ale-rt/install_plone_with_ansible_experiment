@@ -26,14 +26,14 @@
 - name: 'Checkout packages for local development'
   ansible.builtin.git:
     repo: '{{ item.repo }}'
-    dest: 'src/{{ item.name }}'
+    dest: '{{ plone_install_dir }}/src/{{ item.name }}'
     version: '{{ item.version }}'
   loop: '{{ plone_source_checkouts }}'
 
 - name: 'Add source checkouts'
   ansible.builtin.lineinfile:
     dest: '{{ plone_install_dir }}/requirements.txt'
-    line: '-e src/{{ item.name }}'
+    line: '-e {{ plone_install_dir }}/src/{{ item.name }}'
   loop: '{{ plone_source_checkouts }}'
 
 - name: 'Check if we have a constraints.txt file'
@@ -55,17 +55,18 @@
     state: absent
   loop: '{{ plone_source_checkouts }}'
 
-- name: 'Install uv'
-  ansible.builtin.command:
-    cmd: '{{ plone_install_dir }}/.venv/bin/pip install uv'
-    creates: '{{ plone_install_dir }}/.venv/bin/uv'
-  changed_when: false
+- name: 'Install a virtualenv with uv'
+  ansible.builtin.pip:
+    name: 'uv'
+    state: '0.2.11'
+    virtualenv: '{{ plone_install_dir }}/.venv'
+    virtualenv_python: '{{ plone_python }}'
 
 - name: 'Install requirements.txt using uv'
   ansible.builtin.command:
     cmd: '{{ plone_install_dir }}/.venv/bin/uv pip install -c {{ plone_install_dir }}/constraints.txt -r {{ plone_install_dir }}/requirements.txt'
     chdir: '{{ plone_install_dir }}'
-  changed_when: false
+  changed_when: true
 
 - name: 'Create the bin directory'
   ansible.builtin.file:

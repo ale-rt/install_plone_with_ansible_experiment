@@ -42,7 +42,7 @@ jobs:
         run: make
 
       - name: Start the instance
-        run: make start
+        run: $HOME/plone/bin/supervisord
 
       - name: Test the instances
         run: make test
