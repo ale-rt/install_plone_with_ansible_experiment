@@ -1,0 +1,6 @@
+[program:{{ plone_instance_name }}]
+command = {{ plone_install_dir }}/bin/{{ plone_instance_name }} console
+process_name = {{ plone_instance_name }}
+directory = {{ plone_install_dir }}
+priority = 20
+redirect_stderr = false
