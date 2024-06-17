@@ -15,5 +15,7 @@
       loop: '{{ range(plone_workers) | list }}'
       loop_control:
         loop_var: 'plone_instance_number'
+      retries: 10
+      delay: 1
       vars:
         plone_instance_port: '{{ plone_base_port | int + plone_instance_number | int + 1 }}'
