@@ -1,8 +1,14 @@
 ---
 plone_install_dir: '{{ ansible_facts.env.PWD }}'  # noqa: var-naming[no-role-prefix]
-plone_instance_name: 'instance'  # noqa: var-naming[no-role-prefix]
-plone_instance_port: '{{ plone_base_port }}'  # noqa: var-naming[no-role-prefix]
-plone_additional_zcml:  # noqa: var-naming[no-role-prefix]
-plone_instance_threads: 4  # noqa: var-naming[no-role-prefix]
-plone_fast_listen: true  # noqa: var-naming[no-role-prefix]
-plone_instance_skip_supervisor: false  # noqa: var-naming[no-role-prefix]
+plone_instance_name: 'instance'
+plone_instance_port: '{{ plone_base_port }}'
+plone_instance_additional_zcml:
+plone_instance_threads: 4
+plone_instance_fast_listen: true
+plone_instance_skip_supervisor: false
+plone_instance_pts_languages: 'en de it'
+plone_instance_environment_vars: |
+    zope_i18n_compile_mo_files true
+    CHAMELEON_CACHE {{ plone_install_dir }}/var/cache
+    DIAZO_ALWAYS_CACHE_RULES true
+    PTS_LANGUAGES {{ plone_instance_pts_languages }}
