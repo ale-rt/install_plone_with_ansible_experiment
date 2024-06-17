@@ -53,3 +53,24 @@
   community.general.make:
     chdir: '{{ plone_install_dir }}'
     target: 'var/plone-installed'
+
+- name: 'Create the bin directory'
+  ansible.builtin.file:
+    path: '{{ plone_install_dir }}/bin'
+    state: directory
+    mode: '0700'
+
+- name: 'Create the bin/plone_interpreter file'
+  ansible.builtin.template:
+    src: 'bin/plone_interpreter.j2'
+    dest: '{{ plone_install_dir }}/bin/plone_interpreter'
+    mode: '0700'
+
+- name: 'Symlink supervisorctl and supervisord in the bin file'
+  ansible.builtin.file:
+    src: '{{ plone_install_dir }}/.venv/bin/{{ item }}'
+    dest: '{{ plone_install_dir }}/bin/{{ item }}'
+    state: 'link'
+  loop:
+    - 'supervisorctl'
+    - 'supervisord'

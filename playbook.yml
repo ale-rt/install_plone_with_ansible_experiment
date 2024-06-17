@@ -55,12 +55,3 @@
         src: 'etc/supervisord.conf.j2'
         dest: '{{ plone_install_dir }}/etc/supervisord.conf'
         mode: '0600'
-
-    - name: 'Symlink supervisorctl and supervisord in the bin file'
-      ansible.builtin.file:
-        src: '{{ plone_install_dir }}/.venv/bin/{{ item }}'
-        dest: '{{ plone_install_dir }}/bin/{{ item }}'
-        state: 'link'
-      loop:
-        - 'supervisorctl'
-        - 'supervisord'

@@ -5,7 +5,6 @@
     state: directory
     mode: '0700'
   loop:
-    - '{{ plone_install_dir }}/parts/{{ plone_instance_name }}/bin'
     - '{{ plone_install_dir }}/parts/{{ plone_instance_name }}/etc'
     - '{{ plone_install_dir }}/parts/{{ plone_instance_name }}/etc/package-includes'
     - '{{ plone_install_dir }}/parts/{{ plone_instance_name }}/var'
@@ -25,12 +24,6 @@
     src: 'parts/instance/etc/package-includes/999-additional-overrides.zcml.j2'
     dest: "{{ plone_install_dir }}/parts/{{ plone_instance_name }}/etc/package-includes/999-{{ plone_instance_name }}.zcml"
     mode: '0600'
-
-- name: 'Create the instance bin/interpreter file'
-  ansible.builtin.template:
-    src: 'parts/instance/bin/interpreter.j2'
-    dest: '{{ plone_install_dir }}/parts/{{ plone_instance_name }}/bin/interpreter'
-    mode: '0700'
 
 - name: 'Create the instance bin/instance file'
   ansible.builtin.template:
