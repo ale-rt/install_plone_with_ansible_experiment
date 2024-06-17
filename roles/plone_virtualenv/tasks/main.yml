@@ -55,10 +55,11 @@
     state: absent
   loop: '{{ plone_source_checkouts }}'
 
-- name: 'Install Plone'
-  community.general.make:
+- name: 'Install requirements.txt using uv'
+  ansible.builtin.command:
+    cmd: '{{ plone_install_dir }}/.venv/bin/uv pip install -c {{ plone_install_dir }}/constraints.txt -r {{ plone_install_dir }}/requirements.txt'
     chdir: '{{ plone_install_dir }}'
-    target: 'var/plone-installed'
+  changed_when: false
 
 - name: 'Create the bin directory'
   ansible.builtin.file:
