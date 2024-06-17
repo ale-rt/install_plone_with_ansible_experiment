@@ -36,7 +36,6 @@ jobs:
       - name: Prepare the environment
         run: |
           mkdir -p etc/ansible
-          mkdir -p $HOME/plone
           echo "plone_install_dir: $HOME/plone" > etc/ansible/plone.yml
 
       - name: Install dependencies

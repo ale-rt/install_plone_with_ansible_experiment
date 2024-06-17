@@ -1,7 +1,13 @@
 ---
+- name: 'Ensure the folder plone_install_dir exists'
+  ansible.builtin.file:
+    path: '{{ plone_install_dir }}'
+    state: directory
+    mode: '0700'
+
 - name: 'Write a requirements.txt file'
   ansible.builtin.lineinfile:
-    dest: 'requirements.txt'
+    dest: '{{ plone_install_dir }}/requirements.txt'
     line: '{{ item }}'
     create: true
     mode: '0600'
@@ -13,7 +19,7 @@
 
 - name: 'Add extra packages'
   ansible.builtin.lineinfile:
-    dest: 'requirements.txt'
+    dest: '{{ plone_install_dir }}/requirements.txt'
     line: '{{ item }}'
   loop: '{{ plone_extra_packages }}'
 
@@ -26,7 +32,7 @@
 
 - name: 'Add source checkouts'
   ansible.builtin.lineinfile:
-    dest: 'requirements.txt'
+    dest: '{{ plone_install_dir }}/requirements.txt'
     line: '-e src/{{ item.name }}'
   loop: '{{ plone_source_checkouts }}'
 
