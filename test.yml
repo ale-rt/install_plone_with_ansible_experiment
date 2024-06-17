@@ -8,12 +8,6 @@
     plone_workers: 2
   tasks:
 
-    - name: 'Rewrite the supervisord socket to avoid path too long error on github actions'
-      ansible.builtin.replace:
-        path: 'etc/supervisord.conf'
-        regexp: '^file = .*$'
-        replace: 'file = var/supervisord.sock'
-
     - name: 'Check if the instances are running'
       ansible.builtin.uri:
         url: 'http://localhost:{{ plone_instance_port }}/@@ok'
