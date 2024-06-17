@@ -9,6 +9,7 @@
     plone_python: python3.11
     plone_base_port: 8080
     plone_workers: 2
+    plone_worker_instance: false
     zeo_address: '{{ plone_install_dir }}/var/zeo/zeo.sock'
   tasks:
     - name: 'Check if we have custom defined variables'
@@ -47,9 +48,19 @@
       vars:
         plone_instance_name: 'worker'
         plone_instance_port: '{{ plone_base_port | int + 9 }}'
+      when: plone_worker_instance
 
     - name: 'Create the supervisor configuration file'
       ansible.builtin.template:
         src: 'etc/supervisord.conf.j2'
         dest: '{{ plone_install_dir }}/etc/supervisord.conf'
         mode: '0600'
+
+    - name: 'Symlink supervisorctl and supervisord in the bin file'
+      ansible.builtin.file:
+        src: '{{ plone_install_dir }}/.venv/bin/{{ item }}'
+        dest: '{{ plone_install_dir }}/bin/{{ item }}'
+        state: 'link'
+      loop:
+        - 'supervisorctl'
+        - 'supervisord'
