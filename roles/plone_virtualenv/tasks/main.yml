@@ -55,6 +55,12 @@
     state: absent
   loop: '{{ plone_source_checkouts }}'
 
+- name: 'Install uv'
+  ansible.builtin.command:
+    cmd: 'pip install uv'
+    creates: '{{ plone_install_dir }}/.venv/bin/uv'
+  changed_when: false
+
 - name: 'Install requirements.txt using uv'
   ansible.builtin.command:
     cmd: '{{ plone_install_dir }}/.venv/bin/uv pip install -c {{ plone_install_dir }}/constraints.txt -r {{ plone_install_dir }}/requirements.txt'
