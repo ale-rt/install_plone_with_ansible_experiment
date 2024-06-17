@@ -8,6 +8,8 @@
     plone_version: 6.0.11.1
     plone_python: python3.11
     plone_base_port: 8080
+    plone_listen_ips:
+      - '0.0.0.0'
     plone_workers: 2
     plone_worker_instance: false
     zeo_address: '{{ plone_install_dir }}/var/zeo/zeo.sock'

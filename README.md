@@ -40,3 +40,13 @@ plone_source_checkouts:
 plone_zcml:
   - 'plone.app.debugtoolbar'
 ```
+
+#### Variables
+
+- `plone_workers`: the number of Plone instances to create.
+By default they will be named `instance1`, `instance2`, etc. They will listen on a port starting from `plone_base_port` incremented by the number of the instance. Default is `2`
+- `plone_base_port`: the base port for the Plone instances. Default is `8080`
+- `plone_extra_packages`: a list of extra packages to install. Default is `[]`
+- `plone_listen_ips`: List of IPs to listen on. Default is `['0.0.0.0']`
+- `plone_source_checkouts`: List of source checkouts to include in virtualenv. Default is `[]`
+- `plone_zcml`: List of packages for which to include the ZCML. Default is `[]`
