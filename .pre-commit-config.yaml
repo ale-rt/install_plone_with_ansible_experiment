@@ -1,3 +1,4 @@
+---
 repos:
   - repo: https://github.com/ansible-community/ansible-lint.git
     rev: v24.6.0
