@@ -1,36 +1,36 @@
 ---
-- name: 'Create the zeo directory structure'
+- name: Create the zeo directory structure
   ansible.builtin.file:
-    path: '{{ item }}'
+    path: "{{ item }}"
     state: directory
-    mode: '0700'
+    mode: "0700"
   loop:
-    - '{{ plone_install_dir }}/bin'
-    - '{{ plone_install_dir }}/etc'
-    - '{{ plone_install_dir }}/parts/zeo'
-    - '{{ plone_install_dir }}/parts/zeo/bin'
-    - '{{ plone_install_dir }}/parts/zeo/etc'
-    - '{{ plone_install_dir }}/var/blobstorage'
-    - '{{ plone_install_dir }}/var/cache'
-    - '{{ plone_install_dir }}/var/filestorage'
-    - '{{ plone_install_dir }}/var/log'
-    - '{{ plone_install_dir }}/var/supervisor'
-    - '{{ plone_install_dir }}/var/zeo'
+    - "{{ plone_install_dir }}/bin"
+    - "{{ plone_install_dir }}/etc"
+    - "{{ plone_install_dir }}/parts/zeo"
+    - "{{ plone_install_dir }}/parts/zeo/bin"
+    - "{{ plone_install_dir }}/parts/zeo/etc"
+    - "{{ plone_install_dir }}/var/blobstorage"
+    - "{{ plone_install_dir }}/var/cache"
+    - "{{ plone_install_dir }}/var/filestorage"
+    - "{{ plone_install_dir }}/var/log"
+    - "{{ plone_install_dir }}/var/supervisor"
+    - "{{ plone_install_dir }}/var/zeo"
 
-- name: 'Create the zeo configuration file'
+- name: Create the zeo configuration file
   ansible.builtin.template:
-    src: 'parts/zeo/etc/zeo.conf.j2'
-    dest: '{{ plone_install_dir }}/parts/zeo/etc/zeo.conf'
-    mode: '0600'
+    src: parts/zeo/etc/zeo.conf.j2
+    dest: "{{ plone_install_dir }}/parts/zeo/etc/zeo.conf"
+    mode: "0600"
 
-- name: 'Create the runzeo file'
+- name: Create the runzeo file
   ansible.builtin.template:
-    src: 'parts/zeo/bin/runzeo.j2'
-    dest: '{{ plone_install_dir }}/parts/zeo/bin/runzeo'
-    mode: '0700'
+    src: parts/zeo/bin/runzeo.j2
+    dest: "{{ plone_install_dir }}/parts/zeo/bin/runzeo"
+    mode: "0700"
 
-- name: 'Create the zeo supervisor configuration file'
+- name: Create the zeo supervisor configuration file
   ansible.builtin.template:
-    src: 'etc/supervisord.d/zeo.conf.j2'
-    dest: '{{ plone_install_dir }}/etc/supervisord.d/zeo.conf'
-    mode: '0600'
+    src: etc/supervisord.d/zeo.conf.j2
+    dest: "{{ plone_install_dir }}/etc/supervisord.d/zeo.conf"
+    mode: "0600"
