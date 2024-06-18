@@ -1,4 +1,4 @@
 ---
-plone_install_dir: '{{ ansible_facts.env.PWD }}'  # noqa: var-naming[no-role-prefix]
-plone_extra_packages: []  # noqa: var-naming[no-role-prefix]
-plone_source_checkouts: []  # noqa: var-naming[no-role-prefix]
+plone_install_dir: "{{ ansible_facts.env.PWD }}" # noqa: var-naming[no-role-prefix]
+plone_extra_packages: [] # noqa: var-naming[no-role-prefix]
+plone_source_checkouts: [] # noqa: var-naming[no-role-prefix]
