@@ -25,7 +25,7 @@ make start
 
 ### Customizations
 
-Variables for this playbook can be customizaed by placing a YaML file inn the `etc/ansible` folder.
+Variables for this playbook can be customized by placing one (or more) YAML file in the `etc/ansible` folder.
 
 E.g.:
 ```yaml
