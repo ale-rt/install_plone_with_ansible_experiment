@@ -5,7 +5,7 @@
   connection: local
   vars:
     plone_install_dir: "{{ ansible_facts.env.PWD }}"
-    plone_version: 6.0.11.1
+    plone_version: 6.0.12
     plone_python: python3.11
     plone_base_port: 8080
     plone_listen_ips:
