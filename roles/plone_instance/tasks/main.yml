@@ -1,68 +1,68 @@
 ---
-- name: 'Create the instance directory structure'
+- name: Create the instance directory structure
   ansible.builtin.file:
-    path: '{{ item }}'
+    path: "{{ item }}"
     state: directory
-    mode: '0700'
+    mode: "0700"
   loop:
-    - '{{ plone_install_dir }}/parts/{{ plone_instance_name }}/bin'
-    - '{{ plone_install_dir }}/parts/{{ plone_instance_name }}/etc'
-    - '{{ plone_install_dir }}/parts/{{ plone_instance_name }}/etc/package-includes'
-    - '{{ plone_install_dir }}/parts/{{ plone_instance_name }}/var'
-    - '{{ plone_install_dir }}/var/{{ plone_instance_name }}'
+    - "{{ plone_install_dir }}/parts/{{ plone_instance_name }}/bin"
+    - "{{ plone_install_dir }}/parts/{{ plone_instance_name }}/etc"
+    - "{{ plone_install_dir }}/parts/{{ plone_instance_name }}/etc/package-includes"
+    - "{{ plone_install_dir }}/parts/{{ plone_instance_name }}/var"
+    - "{{ plone_install_dir }}/var/{{ plone_instance_name }}"
 
-- name: 'Load files through zcml'
+- name: Load files through zcml
   ansible.builtin.template:
-    src: 'parts/instance/etc/package-includes/instance.zcml.j2'
+    src: parts/instance/etc/package-includes/instance.zcml.j2
     dest: "{{ plone_install_dir }}/parts/{{ plone_instance_name }}/etc/package-includes/{{ '1{:02}'.format(ansible_loop.index) }}-{{ item }}.zcml"
-    mode: '0600'
-  loop: '{{ plone_zcml | default([]) }}'
+    mode: "0600"
+  loop: "{{ plone_zcml | default([]) }}"
   loop_control:
     extended: true
 
-- name: 'Store the content of the plone_instance_additional_zcml variable in a 999 file'
+- name: Store the content of the plone_instance_additional_zcml variable in a 999 file
   ansible.builtin.template:
-    src: 'parts/instance/etc/package-includes/999-additional-overrides.zcml.j2'
+    src: parts/instance/etc/package-includes/999-additional-overrides.zcml.j2
     dest: "{{ plone_install_dir }}/parts/{{ plone_instance_name }}/etc/package-includes/999-{{ plone_instance_name }}.zcml"
-    mode: '0600'
+    mode: "0600"
 
-- name: 'Create the instance bin/interpreter file'
+- name: Create the instance bin/interpreter file
   ansible.builtin.template:
-    src: 'parts/instance/bin/interpreter.j2'
-    dest: '{{ plone_install_dir }}/parts/{{ plone_instance_name }}/bin/interpreter'
-    mode: '0700'
+    src: parts/instance/bin/interpreter.j2
+    dest: "{{ plone_install_dir }}/parts/{{ plone_instance_name }}/bin/interpreter"
+    mode: "0700"
 
-- name: 'Create the instance bin/instance file'
+- name: Create the instance bin/instance file
   ansible.builtin.template:
-    src: 'bin/instance.j2'
-    dest: '{{ plone_install_dir }}/bin/{{ plone_instance_name }}'
-    mode: '0700'
+    src: bin/instance.j2
+    dest: "{{ plone_install_dir }}/bin/{{ plone_instance_name }}"
+    mode: "0700"
   tags:
     - dev
 
-- name: 'Create the instance etc/site.zcml file'
+- name: Create the instance etc/site.zcml file
   ansible.builtin.template:
-    src: 'parts/instance/etc/site.zcml.j2'
-    dest: '{{ plone_install_dir }}/parts/{{ plone_instance_name }}/etc/site.zcml'
-    mode: '0600'
+    src: parts/instance/etc/site.zcml.j2
+    dest: "{{ plone_install_dir }}/parts/{{ plone_instance_name }}/etc/site.zcml"
+    mode: "0600"
 
-- name: 'Create the instance etc/wsgi.ini file'
+- name: Create the instance etc/wsgi.ini file
   ansible.builtin.template:
-    src: 'parts/instance/etc/wsgi.ini.j2'
-    dest: '{{ plone_install_dir }}/parts/{{ plone_instance_name }}/etc/wsgi.ini'
-    mode: '0600'
+    src: parts/instance/etc/wsgi.ini.j2
+    dest: "{{ plone_install_dir }}/parts/{{ plone_instance_name }}/etc/wsgi.ini"
+    mode: "0600"
   vars:
-    plone_listen_address: '{% for ip in plone_listen_ips -%} {{ ip }}:{{ plone_instance_port }} {% endfor %}'
+    plone_listen_address: "{% for ip in plone_listen_ips -%} {{ ip }}:{{ plone_instance_port }} {% endfor %}"
 
-- name: 'Create the instance etc/zope.conf file'
+- name: Create the instance etc/zope.conf file
   ansible.builtin.template:
-    src: 'parts/instance/etc/zope.conf.j2'
-    dest: '{{ plone_install_dir }}/parts/{{ plone_instance_name }}/etc/zope.conf'
-    mode: '0600'
+    src: parts/instance/etc/zope.conf.j2
+    dest: "{{ plone_install_dir }}/parts/{{ plone_instance_name }}/etc/zope.conf"
+    mode: "0600"
 
-- name: 'Create the zope supervisor configuration file'
+- name: Create the zope supervisor configuration file
   ansible.builtin.template:
-    src: 'etc/supervisord.d/plone_instance.conf.j2'
-    dest: '{{ plone_install_dir }}/etc/supervisord.d/{{ plone_instance_name }}.conf'
-    mode: '0600'
+    src: etc/supervisord.d/plone_instance.conf.j2
+    dest: "{{ plone_install_dir }}/etc/supervisord.d/{{ plone_instance_name }}.conf"
+    mode: "0600"
   when: not plone_instance_skip_supervisor
