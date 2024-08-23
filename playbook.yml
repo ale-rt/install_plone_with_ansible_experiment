@@ -7,12 +7,7 @@
     plone_install_dir: "{{ ansible_facts.env.PWD }}"
     plone_version: 6.0.12
     plone_python: python3.11
-    plone_base_port: 8080
-    plone_listen_ips:
-      - 0.0.0.0
-    plone_workers: 2
-    plone_worker_instance: false
-    zeo_address: "{{ plone_install_dir }}/var/zeo/zeo.sock"
+
   tasks:
     - name: Check if we have custom defined variables
       ansible.builtin.include_vars:
@@ -20,36 +15,24 @@
       tags:
         - always
 
-    - name: Run the tasks from the role plone_virtualenv
-      ansible.builtin.include_role:
-        name: plone_virtualenv
-
-    - name: Run the tasks from the role plone_zeo
-      ansible.builtin.include_role:
-        name: plone_zeo
-
-    - name: Run the tasks from the role plone_instance
-      ansible.builtin.include_role:
-        name: plone_instance
-      vars:
-        plone_instance_skip_supervisor: true
-
-    - name: Create the instance workers
-      ansible.builtin.include_role:
-        name: plone_instance
-      loop: "{{ range(plone_workers) | list }}"
-      loop_control:
-        loop_var: plone_instance_number
-      vars:
-        plone_instance_name: instance{{ plone_instance_number | int + 1 }}
-        plone_instance_port: "{{ plone_base_port | int + plone_instance_number | int + 1 }}"
+    - name: Install the plone virtualenv
+      collective.plonestack.plone_venv:
+        target: "{{ plone_install_dir }}"
+        plone_version: "{{ plone_version }}"
+        python_version: "{{ plone_python }}"
       tags:
-        - dev
+        - virtualenv
 
-    - name: Run the tasks from the role plone_instance
-      ansible.builtin.include_role:
-        name: plone_instance
-      vars:
-        plone_instance_name: worker
-        plone_instance_port: "{{ plone_base_port | int + 9 }}"
-      when: plone_worker_instance
+    - name: "Install the zeo server"
+      collective.plonestack.plone_zeoserver:
+        target: "{{ plone_install_dir }}"
+      tags:
+        - zeo
+
+    - name: "Install the zeo clients"
+      collective.plonestack.plone_zeoinstance:
+        target: "{{ plone_install_dir }}"
+
+    # - name: "Configure supervisor"
+    #   collective.plonsestack.plone_supervisor:
+    #     programs: []
