@@ -1,38 +1,31 @@
 ---
-- name: 'Install Plone with ansible'
+- name: "Install Plone with ansible"
   hosts:
     - localhost
   connection: local
-  vars:
-    deploy_plone_target: '/home/ale/tmp/plone-ansible2'
-    deploy_plone_version: '6.0.12'
-    deploy_plone_python: '3.11'
-    deploy_plone_extra_requirements:
-      - 'collective.pdbpp'
-      - 'collective.icecream'
-    deploy_plone_extra_constraints:
-      asttokens: 2.4.1
-      collective.icecream: 1.0.0a1
-      collective.pdbpp: 1.0.0a2
-      executing: 2.0.1
-      icecream: 2.1.3
-      lxml_html_clean: 0.1.1
-      supervisor: 4.2.5
-      uv: 0.3.2
-    deploy_plone_source_checkouts:
-      - name: 'plonetheme.enisa'
-        repo: 'git@github.com:enisaeu/plonetheme.enisa.git'
-        version: 'plone6'
-    deploy_plone_environment_vars: |
-      zope_i18n_compile_mo_files true
-      CHAMELEON_CACHE {{ deploy_plone_target }}/var/cache
-      DIAZO_ALWAYS_CACHE_RULES true
-      PTS_LANGUAGES en
-    deploy_plone_instances:
-      - name: 'instance'
-  tasks:
-    - name: 'Deploy Plone'
-      ansible.builtin.include_role:
-        name: collective.plonestack.deploy_plone
-      tags:
-        - deploy
+  roles:
+    - role: collective.plonestack.deploy_plone
+      vars:
+        deploy_plone_target: "plone"
+        deploy_plone_version: "6.0.12"
+        deploy_plone_python: "3.11"
+        deploy_plone_extra_requirements:
+          - "collective.pdbpp"
+          - "collective.icecream"
+          - "plone.app.debugtoolbar"
+        deploy_plone_extra_constraints:
+          collective.icecream: 1.0.0a1
+          collective.pdbpp: 1.0.0a2
+        deploy_plone_source_checkouts:
+          - name: "plone.app.debugtoolbar"
+            repo: "git@github.com:plone/plone.app.debugtoolbar.git"
+            version: "master"
+        deploy_plone_zcml:
+          - "plone.app.debugtoolbar"
+        deploy_plone_environment_vars: |
+          zope_i18n_compile_mo_files true
+          CHAMELEON_CACHE {{ deploy_plone_target }}/var/cache
+          DIAZO_ALWAYS_CACHE_RULES true
+          PTS_LANGUAGES en
+        deploy_plone_instances:
+          - name: "instance"
