@@ -7,4 +7,6 @@
     - role: collective.plonestack.deploy_plone
       vars:
         deploy_plone_target: "{{ ansible_env.PWD }}/var/plone"
+        deploy_plone_version: "6.0.12"
+        deploy_plone_python: "3.11"
         deploy_plone_ansible_etc_dir: "{{ ansible_env.PWD }}/etc/ansible"
