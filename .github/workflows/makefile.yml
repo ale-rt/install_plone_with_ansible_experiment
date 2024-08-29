@@ -30,19 +30,22 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-cache
 
+      - name: Install the ansible requirements
+        run: make requirements
+
       - name: Run pre-commit
         uses: pre-commit/action@v2.0.0
 
       - name: Prepare the environment
         run: |
           mkdir -p etc/ansible
-          echo "plone_install_dir: $HOME/plone" > etc/ansible/plone.yml
+          echo "deploy_plone_target: $HOME/var/plone" > etc/ansible/plone.yml
 
       - name: Install dependencies
         run: make
 
       - name: Start the instance
-        run: $HOME/plone/bin/supervisord
+        run: $HOME/var/plone/bin/supervisord
 
       - name: Test the instances
         run: make test

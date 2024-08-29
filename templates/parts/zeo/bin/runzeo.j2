@@ -1,9 +1,0 @@
-#!/bin/sh
-PYTHON="{{ plone_install_dir }}/.venv/bin/python"
-INSTANCE_HOME="{{ plone_install_dir }}/parts/zeo"
-CONFIG_FILE="{{ plone_install_dir }}/parts/zeo/etc/zeo.conf"
-ZODB3_HOME="{{ plone_install_dir }}/.venv/lib/python3.11/site-packages/ZEO"
-
-export INSTANCE_HOME
-echo "$PYTHON" -m ZEO.runzeo -C "$CONFIG_FILE" ${1+"$@"}
-exec "$PYTHON" -m ZEO.runzeo -C "$CONFIG_FILE" ${1+"$@"}
