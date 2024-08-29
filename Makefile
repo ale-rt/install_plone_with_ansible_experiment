@@ -1,5 +1,5 @@
 .PHONY: all
-all: install requirements
+all: requirements install
 
 .PHONY: install
 install: .venv/bin/ansible-playbook
