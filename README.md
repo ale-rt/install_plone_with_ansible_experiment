@@ -19,8 +19,18 @@ Test it yourself:
 git clone https://github.com/ale-rt/install_plone_with_ansible_experiment.git plone
 cd plone
 make
-./var/plone/bin/supervisord
 ```
+
+This will install Plone in the `./var/plone` directory.
+
+You can go there and start Plone with:
+
+```shell
+cd var/plone
+./bin/supervisord
+```
+
+Then you can access Plone at http://localhost:8080.
 
 ### Customizations
 
