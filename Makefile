@@ -1,10 +1,14 @@
 .PHONY: all
-all: install
+all: install requirements
 
 .PHONY: install
 install: .venv/bin/ansible-playbook
 	mkdir -p etc/ansible
 	.venv/bin/ansible-playbook playbook.yml
+
+.PHONY: requirements
+requirements: .venv/bin/ansible-playbook
+	.venv/bin/ansible-galaxy install -r requirements.yml
 
 .venv/bin/uv:
 	python3 -m venv .venv
