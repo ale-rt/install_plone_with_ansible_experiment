@@ -30,6 +30,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-cache
 
+      - name: Install the ansible requirements
+        run: make requirements
+
       - name: Run pre-commit
         uses: pre-commit/action@v2.0.0
 
